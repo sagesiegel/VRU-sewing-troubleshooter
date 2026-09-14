@@ -1,0 +1,660 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Guided sewing machine troubleshooting from Vacuums R Us & Sewing Too.">
+  <title>Sewing Help | Vacuums R Us & Sewing Too</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap"
+    rel="stylesheet"
+  >
+
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+
+<body>
+  <header class="site-header">
+    <button
+      class="brand"
+      id="homeButton"
+      type="button"
+      aria-label="Return to the start"
+    >
+      <img
+        src="assets/vru-logo.png"
+        alt="Vacuums R Us and Sewing Too"
+      >
+    </button>
+
+    <div class="header-actions">
+      <span id="machinePill" class="machine-pill hidden"></span>
+
+      <button
+        id="changeMachineButton"
+        class="quiet-button hidden"
+        type="button"
+      >
+        Change machine
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <div
+      id="progressArea"
+      class="progress-area hidden"
+      aria-live="polite"
+    >
+      <div class="progress-copy">
+        <span id="progressText"></span>
+        <span id="progressPercent"></span>
+      </div>
+
+      <div class="progress-track">
+        <div id="progressFill" class="progress-fill"></div>
+      </div>
+    </div>
+
+    <section id="welcome" class="screen active">
+      <div class="hero">
+        <div class="hero-copy">
+          <span class="kicker light">Sewing machine support</span>
+
+          <h1>
+            Let’s get you<br>
+            <em>back to sewing.</em>
+          </h1>
+
+          <p>
+            Pick your machine and problem. We’ll walk through one
+            clear step at a time and remember everything you try.
+          </p>
+
+          <button
+            id="startButton"
+            class="button button-light button-large"
+            type="button"
+          >
+            Start troubleshooting <span>→</span>
+          </button>
+
+          <div class="hero-points">
+            <span>✓ Model-specific help</span>
+            <span>✓ Service-ready summary</span>
+          </div>
+        </div>
+
+        <div class="hero-art" aria-hidden="true">
+          <div class="stitch-card">
+            <span class="needle-line"></span>
+            <span class="thread-loop">S</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="safety-strip">
+        <b>Safety first:</b>
+        Stop and unplug the machine if you notice smoke, sparks,
+        a damaged cord, a burning smell, or unusual electrical behavior.
+      </div>
+    </section>
+
+    <section id="brand" class="screen">
+      <div class="panel">
+        <button
+          class="back-link"
+          data-screen="welcome"
+          type="button"
+        >
+          ← Back
+        </button>
+
+        <span class="kicker">Choose your machine</span>
+        <h2>What brand is on the front?</h2>
+
+        <p class="lead">
+          We’ll match the directions to the way your machine is built.
+        </p>
+
+        <div class="choice-grid two">
+          <button
+            class="choice-card brand-card"
+            data-brand="janome"
+            type="button"
+          >
+            <div class="brand-mark">J</div>
+
+            <div>
+              <b>Janome</b>
+              <span>Choose a supported model</span>
+            </div>
+
+            <i>→</i>
+          </button>
+
+          <button
+            class="choice-card brand-card"
+            data-brand="generic"
+            type="button"
+          >
+            <div class="brand-mark purple">✦</div>
+
+            <div>
+              <b>Generic / universal</b>
+              <span>Simplified help for most machines</span>
+            </div>
+
+            <i>→</i>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section id="model" class="screen">
+      <div class="panel wide-panel">
+        <button
+          class="back-link"
+          data-screen="brand"
+          type="button"
+        >
+          ← Back
+        </button>
+
+        <span class="kicker">Choose your Janome</span>
+        <h2>Which model do you have?</h2>
+
+        <p class="lead">
+          Look for the model name printed on the front or side of the machine.
+        </p>
+
+        <div id="modelGrid" class="model-grid"></div>
+
+        <div class="soft-note">
+          <b>Don’t see yours?</b>
+          Go back and choose Generic / universal for simplified directions.
+        </div>
+      </div>
+    </section>
+
+    <section id="issue" class="screen">
+      <div class="panel">
+        <button id="issueBack" class="back-link" type="button">
+          ← Back
+        </button>
+
+        <span class="kicker">Tell us what’s happening</span>
+        <h2>What is your machine doing?</h2>
+
+        <div class="issue-list">
+          <button
+            class="issue-card available"
+            data-issue="skipping"
+            type="button"
+          >
+            <span class="issue-icon">〰</span>
+
+            <div>
+              <b>Skipping stitches</b>
+              <small>Stitches are missing or the seam has gaps</small>
+            </div>
+
+            <span class="status available-status">Start guide</span>
+          </button>
+
+          <button class="issue-card" type="button" disabled>
+            <span class="issue-icon">⌁</span>
+
+            <div>
+              <b>Thread bunching underneath</b>
+              <small>Loops or a bird’s nest under the fabric</small>
+            </div>
+
+            <span class="status">Coming soon</span>
+          </button>
+
+          <button class="issue-card" type="button" disabled>
+            <span class="issue-icon">✂</span>
+
+            <div>
+              <b>Thread keeps breaking</b>
+              <small>The upper or bobbin thread repeatedly snaps</small>
+            </div>
+
+            <span class="status">Coming soon</span>
+          </button>
+
+          <button class="issue-card" type="button" disabled>
+            <span class="issue-icon">↛</span>
+
+            <div>
+              <b>Fabric is not feeding</b>
+              <small>The fabric stays in place or feeds unevenly</small>
+            </div>
+
+            <span class="status">Coming soon</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section id="setup" class="screen">
+      <div class="panel compact-panel">
+        <button
+          class="back-link"
+          data-screen="issue"
+          type="button"
+        >
+          ← Back
+        </button>
+
+        <span class="kicker">Before step one</span>
+        <h2>Create a clean test setup</h2>
+
+        <p class="lead">
+          This separates a machine problem from a fabric,
+          accessory, or setting problem.
+        </p>
+
+        <div class="number-list">
+          <div>
+            <span>1</span>
+            <p>Install the standard all-purpose or zigzag foot.</p>
+          </div>
+
+          <div>
+            <span>2</span>
+            <p>Select a center straight stitch at a medium length.</p>
+          </div>
+
+          <div>
+            <span>3</span>
+            <p>Use two layers of ordinary woven cotton.</p>
+          </div>
+
+          <div>
+            <span>4</span>
+            <p>Use regular all-purpose thread in the needle and bobbin.</p>
+          </div>
+        </div>
+
+        <label class="confirm">
+          <input id="setupCheck" type="checkbox">
+          <span>I’ve prepared a basic test sample.</span>
+        </label>
+
+        <button
+          id="beginSteps"
+          class="button button-primary full"
+          type="button"
+          disabled
+        >
+          Begin troubleshooting
+        </button>
+      </div>
+    </section>
+
+    <section id="troubleshooting" class="screen">
+      <article class="panel step-panel">
+        <button id="previousStep" class="back-link" type="button">
+          ← Previous step
+        </button>
+
+        <div class="step-heading">
+          <div>
+            <span id="stepKicker" class="kicker"></span>
+            <h2 id="stepTitle"></h2>
+            <p id="stepIntro" class="lead"></p>
+          </div>
+
+          <span id="stepNumber" class="step-number"></span>
+        </div>
+
+        <div id="visualArea" class="visual-area"></div>
+
+        <div class="instruction-layout">
+          <div class="instruction-card">
+            <h3>What to do</h3>
+            <ol id="instructionList"></ol>
+          </div>
+
+          <aside>
+            <div id="tipBox" class="info-box">
+              <b id="tipTitle"></b>
+              <p id="tipText"></p>
+            </div>
+
+            <div id="warningBox" class="info-box warning hidden">
+              <b>Important</b>
+              <p id="warningText"></p>
+            </div>
+          </aside>
+        </div>
+
+        <div id="productShelf" class="product-shelf hidden"></div>
+
+        <div class="test-box">
+          <div>
+            <span class="kicker light">Time to test</span>
+            <h3>Did that fix the skipped stitches?</h3>
+
+            <p>
+              Sew several inches on your prepared cotton sample.
+            </p>
+          </div>
+
+          <div class="test-actions">
+            <button
+              id="fixedButton"
+              class="button button-success"
+              type="button"
+            >
+              Yes, it’s fixed
+            </button>
+
+            <button
+              id="nextButton"
+              class="button button-light-outline"
+              type="button"
+            >
+              No, keep going
+            </button>
+
+            <button
+              id="cantButton"
+              class="cant-link"
+              type="button"
+            >
+              I can’t complete this step
+            </button>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section id="success" class="screen">
+      <div class="panel result-panel">
+        <div class="celebrate">✓</div>
+
+        <span class="kicker">You fixed it</span>
+        <h2>Yay, your machine is sewing again!</h2>
+
+        <p id="successText" class="lead centered"></p>
+
+        <div class="success-summary">
+          <span>What worked</span>
+          <b id="successfulStep"></b>
+        </div>
+
+        <div class="restock-section">
+          <span class="kicker">Now that you’re back to sewing</span>
+          <h3>Restock your sewing basket</h3>
+
+          <p>
+            Pick up the little things that keep the next project moving.
+          </p>
+
+          <div id="restockGrid" class="shop-grid"></div>
+
+          <a
+            class="button button-primary"
+            href="https://www.vacuumsrus.com/product-category/sewing/notions/"
+            target="_blank"
+            rel="noopener"
+          >
+            Shop all sewing notions →
+          </a>
+        </div>
+
+        <button
+          id="anotherIssue"
+          class="quiet-button"
+          type="button"
+        >
+          Troubleshoot another issue
+        </button>
+      </div>
+    </section>
+
+    <section id="service" class="screen">
+      <div class="panel result-panel">
+        <div class="service-icon">✦</div>
+
+        <span class="kicker">Professional service recommended</span>
+        <h2>Your machine may need a closer look.</h2>
+
+        <p class="lead centered">
+          You finished the safe at-home checks. We’ve saved what you
+          tried so you won’t need to explain it all again.
+        </p>
+
+        <div class="summary-box">
+          <div>
+            <span>Troubleshooting summary</span>
+
+            <button
+              id="copySummary"
+              class="mini-button"
+              type="button"
+            >
+              Copy
+            </button>
+          </div>
+
+          <pre id="summaryText"></pre>
+        </div>
+
+        <div class="service-links">
+          <a href="#requestForm">
+            <b>Prepare a service request</b>
+            <span>Summary included</span>
+          </a>
+
+          <a
+            href="https://www.vacuumsrus.com/locations/"
+            target="_blank"
+            rel="noopener"
+          >
+            <b>Find a store</b>
+            <span>Hours and directions</span>
+          </a>
+
+          <a
+            href="https://www.vacuumsrus.com/contact/"
+            target="_blank"
+            rel="noopener"
+          >
+            <b>Contact VRU</b>
+            <span>Send a general question</span>
+          </a>
+
+          <a href="tel:+17209542151">
+            <b>Call a store</b>
+            <span>(720) 954-2151</span>
+          </a>
+        </div>
+
+        <form id="requestForm" class="request-form">
+          <div class="form-heading">
+            <div>
+              <span class="kicker">Prototype</span>
+              <h3>Prepare your service request</h3>
+            </div>
+
+            <span class="prototype-tag">
+              Direct submission coming soon
+            </span>
+          </div>
+
+          <div class="form-grid">
+            <label>
+              Name
+              <input
+                id="customerName"
+                type="text"
+                autocomplete="name"
+              >
+            </label>
+
+            <label>
+              Email
+              <input
+                id="customerEmail"
+                type="email"
+                autocomplete="email"
+              >
+            </label>
+
+            <label>
+              Phone
+              <input
+                id="customerPhone"
+                type="tel"
+                autocomplete="tel"
+              >
+            </label>
+
+            <label>
+              Preferred store
+
+              <select id="customerStore">
+                <option value="">Choose one</option>
+                <option>Arvada</option>
+                <option>Fort Collins</option>
+                <option>No preference</option>
+              </select>
+            </label>
+          </div>
+
+          <label>
+            Additional details
+
+            <textarea
+              id="customerDetails"
+              rows="5"
+              placeholder="Add anything else the technician should know."
+            ></textarea>
+          </label>
+
+          <label>
+            Troubleshooting summary
+
+            <textarea
+              id="summaryField"
+              rows="9"
+              readonly
+            ></textarea>
+          </label>
+
+          <div class="form-buttons">
+            <button
+              id="previewEmail"
+              class="button button-secondary"
+              type="button"
+            >
+              Preview email
+            </button>
+
+            <button
+              id="copyRequest"
+              class="button button-secondary"
+              type="button"
+            >
+              Copy full request
+            </button>
+
+            <button
+              class="button button-primary"
+              type="submit"
+              disabled
+            >
+              Submit online — coming soon
+            </button>
+          </div>
+
+          <p id="copyNotice" class="copy-notice hidden">
+            Copied!
+          </p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <dialog id="emailDialog">
+    <button
+      id="closeDialog"
+      class="dialog-close"
+      type="button"
+      aria-label="Close"
+    >
+      ×
+    </button>
+
+    <span class="kicker">Email preview</span>
+    <h3>Prepared service request</h3>
+
+    <textarea
+      id="emailPreview"
+      rows="18"
+      readonly
+    ></textarea>
+
+    <div class="form-buttons">
+      <button
+        id="copyEmail"
+        class="button button-secondary"
+        type="button"
+      >
+        Copy email
+      </button>
+
+      <button
+        id="openEmail"
+        class="button button-primary"
+        type="button"
+      >
+        Open email app
+      </button>
+    </div>
+  </dialog>
+
+  <footer>
+    <img src="assets/vru-logo.png" alt="">
+
+    <p>
+      Friendly help from people who know machines.
+    </p>
+
+    <nav>
+      <a
+        href="https://www.vacuumsrus.com/product-category/sewing/notions/"
+        target="_blank"
+        rel="noopener"
+      >
+        Shop sewing
+      </a>
+
+      <a
+        href="https://www.vacuumsrus.com/locations/"
+        target="_blank"
+        rel="noopener"
+      >
+        Locations
+      </a>
+
+      <a
+        href="https://www.vacuumsrus.com/contact/"
+        target="_blank"
+        rel="noopener"
+      >
+        Contact
+      </a>
+    </nav>
+  </footer>
+</body>
+</html>
